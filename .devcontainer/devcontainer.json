@@ -1,0 +1,31 @@
+{
+  "name": "AI Writing Space",
+  "image": "mcr.microsoft.com/devcontainers/python:3-bookworm",
+  "runArgs": ["--init", "--network=host"],
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "mounts": [
+    "source=ai-writing-space-home,target=/home/vscode,type=volume"
+  ],
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "openai.chatgpt",
+        "Anthropic.claude-code",
+        "google.google-antigravity"
+      ],
+      "settings": {
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "files.associations": {
+          "*.qmd": "markdown"
+        }
+      }
+    }
+  },
+  "containerEnv": {
+    "DISABLE_TELEMETRY": "1"
+  }
+}

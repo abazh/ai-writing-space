@@ -1,0 +1,15 @@
+# Quarto build artifacts
+_site/
+*.html
+*.pdf
+*.docx
+*.epub
+*.tex
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
