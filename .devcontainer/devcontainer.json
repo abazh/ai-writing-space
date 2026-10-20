@@ -1,8 +1,21 @@
 {
   "name": "AI Writing Space",
-  "image": "mcr.microsoft.com/devcontainers/python:3-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/python:3.13-bookworm",
   "runArgs": ["--init", "--network=host"],
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4.1.3": {
+      "version": "29.9.0"
+    },
+    "ghcr.io/devcontainers/features/node:2.1.1": {
+      "version": "22",
+      "npmVersion": "none",
+      "pnpmVersion": "none",
+      "nodeGypDependencies": false,
+      "nvmVersion": "0.40.3"
+    }
+  },
   "mounts": [
     "source=ai-writing-space-home,target=/home/vscode,type=volume"
   ],
@@ -10,20 +23,31 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
         "openai.chatgpt",
         "Anthropic.claude-code",
-        "google.google-antigravity"
+        "Google.google-antigravity",
+        "quarto.quarto",
+        "James-Yu.LaTeX-Workshop",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-toolsai.jupyter"
       ],
       "settings": {
+        "editor.formatOnSave": true,
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.organizeImports": "explicit"
+        },
         "files.trimTrailingWhitespace": true,
-        "files.insertFinalNewline": true,
-        "files.associations": {
-          "*.qmd": "markdown"
-        }
+        "typescript.updateImportsOnFileMove.enabled": "always"
       }
     }
+  },
+  "remoteEnv": {
+    "PATH": "/home/vscode/.local/tinytex-bin:/home/vscode/.local/bin:${containerEnv:PATH}"
   },
   "containerEnv": {
     "DISABLE_TELEMETRY": "1"

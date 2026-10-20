@@ -1,15 +1,76 @@
-# Quarto build artifacts
-_site/
-*.html
-*.pdf
-*.docx
-*.epub
-*.tex
+# Personal work (keep reusable starters in templates/)
+/papers/
+/scratch/
 
-# Python
-__pycache__/
-*.pyc
+# Quarto output directory
+_site/
+
+# Dependencies
+node_modules/
 .venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Environment files (keep templates tracked)
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Editor / IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
+Thumbs.db
+
+.quarto/
+**/*.quarto_ipynb
+
+# Generated lock files
+# .agents/ + skills-lock.json from post-create.sh (npx skills add) on container creation.
+# devcontainer-lock.json from the devcontainer lock feature.
+.agents/
+skills-lock.json
+devcontainer-lock.json
+
+# AI agent residue (local state, todos, history)
+.claude/
+.codex/
+.cursor/
+.windsurf/
+.gemini/
+.aider*
+.cline/
+.roo/
+.continue/
+.opencode/
+.trae/
