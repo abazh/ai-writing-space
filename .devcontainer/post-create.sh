@@ -1,31 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-QUARTO_VERSION="1.10.19"
-ARCH=$(dpkg --print-architecture)
-
-if [ "$ARCH" = "arm64" ]; then
-    QUARTO_FILE="quarto-${QUARTO_VERSION}-linux-arm64.deb"
-    QUARTO_SHA256="35bb613052da98bef92ec3b7de77c3405a8e546363c7d2aa3abe15a39efa5045"
-elif [ "$ARCH" = "amd64" ]; then
-    QUARTO_FILE="quarto-${QUARTO_VERSION}-linux-amd64.deb"
-    QUARTO_SHA256="7f0c4769e7f0e55f50d922f44b18db5118fb388d2b8fd27291fe1f8beafb43eb"
-else
-    echo "Unsupported architecture: $ARCH"
-    exit 1
-fi
-
-QUARTO_URL="https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/${QUARTO_FILE}"
-QUARTO_DEB="/tmp/${QUARTO_FILE}"
-trap 'rm -f "$QUARTO_DEB"' EXIT
-
-echo "Downloading ${QUARTO_FILE}..."
-curl --fail --location --retry 3 --output "$QUARTO_DEB" "$QUARTO_URL"
-echo "${QUARTO_SHA256}  ${QUARTO_DEB}" | sha256sum --check
-
-sudo apt-get update
-sudo apt-get install -y --no-install-recommends "$QUARTO_DEB" perl
-sudo rm -rf /var/lib/apt/lists/*
+# Install Quarto (idempotent; also re-checked on every attach via postAttachCommand).
+bash "$(dirname "$0")/install-quarto.sh"
 
 # Install analysis libraries for the image's /usr/local Python, not Debian's Python.
 python -m pip install --user --disable-pip-version-check --no-cache-dir \
@@ -60,8 +37,14 @@ tlmgr install latexmk
 latexmk -v
 
 # Install shared skills for the selected agent tools.
-npx --yes skills@1.7.0 add mattpocock/skills/skills/engineering -g \
+npx --yes skills@1.7.4 add mattpocock/skills/skills/engineering -g \
   -a codex -a antigravity -a antigravity-cli -a claude-code --yes
-npx --yes skills@1.7.0 add vercel-labs/skills@find-skills -g \
+npx --yes skills@1.7.4 add vercel-labs/skills@find-skills -g \
   -a codex -a antigravity -a antigravity-cli -a claude-code --yes
+
+# Link shared skills into Gemini's config, replacing any stale links.
+echo "Linking shared skills into ~/.gemini/config/skills..."
+mkdir -p ~/.gemini/config/skills
+ln -sfn ~/.agents/skills/* ~/.gemini/config/skills/
+
 echo "Research writing environment is ready."

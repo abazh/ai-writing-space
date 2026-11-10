@@ -9,17 +9,14 @@
       "version": "29.9.0"
     },
     "ghcr.io/devcontainers/features/node:2.1.1": {
-      "version": "22",
-      "npmVersion": "none",
-      "pnpmVersion": "none",
-      "nodeGypDependencies": false,
-      "nvmVersion": "0.40.3"
+      "version": "24"
     }
   },
   "mounts": [
     "source=ai-writing-space-home,target=/home/vscode,type=volume"
   ],
   "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postAttachCommand": "bash .devcontainer/install-quarto.sh",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -36,6 +33,7 @@
       ],
       "settings": {
         "editor.formatOnSave": true,
+        "quarto.path": "/opt/quarto/bin/quarto",
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit",
@@ -47,7 +45,7 @@
     }
   },
   "remoteEnv": {
-    "PATH": "/home/vscode/.local/tinytex-bin:/home/vscode/.local/bin:${containerEnv:PATH}"
+    "PATH": "/opt/quarto/bin:/home/vscode/.local/tinytex-bin:/home/vscode/.local/bin:${containerEnv:PATH}"
   },
   "containerEnv": {
     "DISABLE_TELEMETRY": "1"
