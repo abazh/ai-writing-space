@@ -16,7 +16,13 @@ for rc in "$HOME/.bashrc" "$HOME/.profile"; do
 done
 
 # Install TinyTeX in the persisted user home for PDF rendering.
-quarto install tinytex --no-prompt
+(
+  temp_dir="$(mktemp -d)"
+  trap 'rm -rf "$temp_dir"' EXIT
+  TMPDIR="$temp_dir" \
+    PATH="/opt/quarto/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+    quarto install tinytex --no-prompt
+)
 
 # Expose TinyTeX to terminals and LaTeX Workshop on either supported architecture.
 TEX_MANAGERS=("$HOME"/.TinyTeX/bin/*/tlmgr)
